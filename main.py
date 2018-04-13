@@ -1,1 +1,3 @@
 print('first')
+
+print('second')
