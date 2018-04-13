@@ -1,3 +1,1 @@
 print('first')
-
-print('second')
