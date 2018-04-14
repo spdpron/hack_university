@@ -13,29 +13,25 @@
 ```json
 {
     "properties": {
-        "body": {
+        "parent_link": {
             "type": "string"
         },
-        "index": {
-            "type": "number"
-        },
-        "title": {
-            "type": "string"
+        "xpaths": {
+            "items": {
+                "properties": {
+                    "field": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "type": "array"
         }
     },
     "type": "object"
 }
 ```
 
-
-**Input Example**
-```json
-{
-    "body": "Equally important message",
-    "index": 0,
-    "title": "Very Important Post-It Note"
-}
-```
 
 
 **Output Schema**
@@ -51,19 +47,5 @@
 ```
 
 
-**Output Example**
-```json
-{
-    "message": "Very Important Post-It Note was posted."
-}
-```
-
-
-**Notes**
-
-POST the required parameters to post a Post-It note
-* `title`: Title of the note
-* `body`: Body of the note
-* `index`: An easy index with which to find the note
 
 
