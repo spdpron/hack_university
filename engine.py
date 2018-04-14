@@ -10,7 +10,6 @@ import time
 
 class Engine(Thread):
     def __init__(self, params):
-        ''' Constructor. '''
         Thread.__init__(self)
         self.params = params
 

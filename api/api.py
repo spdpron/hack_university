@@ -31,14 +31,6 @@ class PostIt(APIHandler):
         },
     )
     def post(self):
-        """
-        POST the required parameters to post a Post-It note
-        * `title`: Title of the note
-        * `body`: Body of the note
-        * `index`: An easy index with which to find the note
-        """
-        # `schema.validate` will JSON-decode `self.request.body` for us
-        #   and set self.body as the result, so we can use that here
         self.engine = Engine(self.body)
         self.engine.setName('Thread 1')
         self.engine.start()
