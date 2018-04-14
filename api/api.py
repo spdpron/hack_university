@@ -9,25 +9,110 @@ class PostIt(APIHandler):
         input_schema={
             "type": "object",
             "properties": {
-                "parent_link": {"type": "string"},
-                "xpaths": {
+                "parentLinks": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                        }
+                    },
+                "childLinks": {
                     "type": "array",
                     "items": {
                         "type": "object",
                         "properties": {
-                            "field": {
+                            "name": {
                                 "type": "string"
+                                },
+                            "searchEntities": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "xPath": {
+                                            "type": "string"
+                                        },
+                                        "cssClass": {
+                                            "type": "string"
+                                        },
+                                        "id": {
+                                            "type": "string"
+                                        }
+                                    }
                                 }
-                            }
+                            },
+                            "searchQuery": {"type": "string"}
+                        }
+                    }
+                },
+                "crawlFields": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                                },
+                            "searchEntities": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "xPath": {
+                                            "type": "string"
+                                        },
+                                        "cssClass": {
+                                            "type": "string"
+                                        },
+                                        "id": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            },
+                            "fields": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                            },
+                                        "searchEntities": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "name": {
+                                                        "type": "string"
+                                                    },
+                                                    "xPath": {
+                                                        "type": "string"
+                                                    },
+                                                    "cssClass": {
+                                                        "type": "string"
+                                                    },
+                                                    "id": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "searchQuery": {"type": "string"}
+                                    }
+                                }
+                            },
+                            "searchQuery": {"type": "string"}
                         }
                     }
                 }
+            }
         },
-        # input_example={
-        #     "title": "Very Important Post-It Note",
-        #     "body": "Equally important message",
-        #     "index": 0
-        # },
         output_schema={
             "type": "object",
             "properties": {

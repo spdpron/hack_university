@@ -13,17 +13,111 @@
 ```json
 {
     "properties": {
-        "parent_link": {
-            "type": "string"
-        },
-        "xpaths": {
+        "childLinks": {
             "items": {
                 "properties": {
-                    "field": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "searchEntities": {
+                        "items": {
+                            "properties": {
+                                "cssClass": {
+                                    "type": "string"
+                                },
+                                "id": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "xPath": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "type": "array"
+                    },
+                    "searchQuery": {
                         "type": "string"
                     }
                 },
                 "type": "object"
+            },
+            "type": "array"
+        },
+        "crawlFields": {
+            "items": {
+                "properties": {
+                    "fields": {
+                        "items": {
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                                "searchEntities": {
+                                    "items": {
+                                        "properties": {
+                                            "cssClass": {
+                                                "type": "string"
+                                            },
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "xPath": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    },
+                                    "type": "array"
+                                },
+                                "searchQuery": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "type": "array"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "searchEntities": {
+                        "items": {
+                            "properties": {
+                                "cssClass": {
+                                    "type": "string"
+                                },
+                                "id": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "xPath": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "type": "array"
+                    },
+                    "searchQuery": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "type": "array"
+        },
+        "parentLinks": {
+            "items": {
+                "type": "string"
             },
             "type": "array"
         }
