@@ -12,6 +12,7 @@ class Engine(Thread):
     def __init__(self, params):
         Thread.__init__(self)
         self.params = params
+        self.flag = True
         options = Options()
         # options.add_argument("--headless")
         self.driver = webdriver.Firefox(firefox_options=options)
@@ -28,33 +29,48 @@ class Engine(Thread):
             time.sleep(5)
 
     def run(self):
-        url = 'http://10.0.1.71:8081/pull'
-        headers = {'content-type': 'application/json'}
-        for link in self.params['parentLinks']:
-            data = self.fetch_mainPage(link)
-            payload = {"url": link, "crawledObject": data}
-            response = requests.post(url, data=json.dumps(payload).encode("utf-8"), headers=headers)
-            if self.params["childLinks"]:
-                links = list(self.fetch_childLinks(link))
-                for item in links[:10]:
-                    data = self.fetch_mainPage(item)
-                    if data:
-                        payload = {"url": item, "crawledObject": data}
-                        response = requests.post(url, data=json.dumps(payload).encode("utf-8"), headers=headers)
-        self.driver.close()
+        while self.flag:
+            url = 'http://10.0.1.71:8081/pull'
+            headers = {'content-type': 'application/json'}
+            for link in self.params['parentLinks']:
+                data = self.fetch_mainPage(link)
+                payload = {"url": link, "crawledObject": data}
+                response = requests.post(url, data=json.dumps(payload).encode("utf-8"), headers=headers)
+                if self.params["childLinks"]:
+                    print(self.params["objectsToCrawl"])
+                    if self.params["objectsToCrawl"]:
+                        links = list(self.fetch_childLinks(link))
+                        for item in links[:self.params["objectsToCrawl"]]:
+                            data = self.fetch_mainPage(item)
+                            if data:
+                                payload = {"url": item, "crawledObject": data}
+                                response = requests.post(url, data=json.dumps(payload).encode("utf-8"), headers=headers)
+                    else:
+                        links = list(self.fetch_childLinks(link))
+                        for item in links[:5]:
+                            data = self.fetch_mainPage(item)
+                            if data:
+                                payload = {"url": item, "crawledObject": data}
+                                response = requests.post(url, data=json.dumps(payload).encode("utf-8"), headers=headers)
+            self.driver.close()
+        else: return
 
     def fetch_mainPage(self, link):
         try:
             information = {}
             self.driver.get(link)
-            try: self.driver.find_element_by_class_name("profile_more_info_link").click()
-            except: pass
+            try:
+                self.driver.find_element_by_class_name("profile_more_info_link").click()
+                time.sleep(0.7)
+            except:
+                pass
             html = self.driver.page_source
             root = lxml.html.fromstring(html)
             for item in self.params["crawlFields"]:
                 for obj in item["searchEntities"]:
                     try:
-                        information[obj['name']] = root.xpath(obj["xPath"])[0].text_content().strip()
+                        if root.xpath(obj["xPath"])[0].text_content().strip():
+                            information[obj['name']] = root.xpath(obj["xPath"])[0].text_content().strip()
                     except:
                         continue
             return information
@@ -114,3 +130,6 @@ class Engine(Thread):
         #                     continue
         # links = links + list(set(new_links) - set(links))
         return set(links)
+
+    def stop(self):
+        self.flag = False

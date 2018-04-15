@@ -9,6 +9,8 @@ from tornado.web import RequestHandler, asynchronous
 from tornado import gen
 from engine import Engine
 from tornado.escape import json_encode
+from datetime import datetime
+import time
 
 class EngineReciever(RequestHandler):
     def set_default_headers(self):
@@ -26,8 +28,17 @@ class EngineReciever(RequestHandler):
     def post(self):
         print('start')
         data = json.loads(self.request.body.decode('utf-8'))
-        self.engine = Engine(data)
-        self.engine.start()
+        if data["hoursToCrawl"] or data["minutesToCrawl"]:
+            s = str(data["hoursToCrawl"])+':'+str(data["minutesToCrawl"])
+            d = datetime.strptime(s, "%H:%M")
+            time_to_kill = time.mktime(d.timetuple())
+            self.engine = Engine(data)
+            self.engine.start()
+            self.engine.join(time_to_kill)
+            self.engine.stop()
+        else:
+            self.engine = Engine(data)
+            self.engine.start()
         self.finish()
 
 def main():
